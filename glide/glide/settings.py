@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
     'projects.apps.ProjectsConfig',
-    'authentication',
+    'notifications.apps.NotificationsConfig',
+    'authentication',    
 ]
 
 MIDDLEWARE = [

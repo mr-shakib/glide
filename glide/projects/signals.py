@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.core.mail import send_mail
 from .models import Task
 from django.conf import settings
+from notifications.models import Notification
 
 
 @receiver(post_save, sender=Task)
@@ -22,4 +23,9 @@ def task_assigned_notification(sender, instance, created, **kwargs):
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[instance.assigned_to.email],
             fail_silently=True,
+        )
+
+        Notification.objects.create(
+            user=instance.assigned_to,
+            message=f"You have been assigned a new task {instance.title}"
         )
