@@ -37,14 +37,18 @@ from .permissions import IsProjectOwner, IsTaskAssignee
 
 class ProjectViewSet(viewsets.ModelViewSet):
 
-    queryset = Project.objects.all()
+    queryset = Project.objects.select_related("owner").prefetch_related("tasks")
     serializer_class = ProjectSerializer
-    permission_classes = [IsAuthenticated, IsProjectOwner]
+    # permission_classes = [IsAuthenticated, IsProjectOwner]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
 class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
+    queryset = Task.objects.select_related("project","assigned_to")
     serializer_class = TaskSerializer
-    permission_classes = [IsAuthenticated, IsTaskAssignee]
+    # permission_classes = [IsAuthenticated, IsTaskAssignee]
+
+    filterset_fields = ["status", "project", "assigned_to"]
+    search_fields = ["title", "description"]
+    ordering_fields = ["createdAt", "due_date"]
