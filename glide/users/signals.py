@@ -14,7 +14,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         send_mail(
             subject="Welcome to Glide",
             message="Your account has been created successfully!",
-            from_email=settings.DEFAULT_FROM_EMIAL,
+            from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list= [instance.email],
             fail_silently=True
         )
